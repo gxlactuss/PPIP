@@ -15,8 +15,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
 # ---- Password hashing ----------------------------------------------------
 
 def hash_password(plain_password: str) -> str:
-    return pwd_context.hash(plain_password)
-
+    # Truncate password to 72 characters to satisfy bcrypt's limit
+    truncated_password = plain_password[:72]
+    return pwd_context.hash(truncated_password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)

@@ -15,7 +15,18 @@ class QuizDifficulty(str, Enum):
     EASY = "easy"
     MEDIUM = "medium"
     HARD = "hard"
+class QuizQuestion(SQLModel, table=True):
+    __tablename__ = "quiz_questions"
 
+    id: Optional[int] = Field(default=None, primary_key=True)
+    topic: QuizTopic
+    difficulty: QuizDifficulty
+    question_text: str
+    option_a: str
+    option_b: str
+    option_c: str
+    option_d: str
+    correct_answer: str
 
 class QuizResult(SQLModel, table=True):
     __tablename__ = "quiz_results"

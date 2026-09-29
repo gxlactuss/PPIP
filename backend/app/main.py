@@ -8,7 +8,7 @@ from database.db import init_db
 
 from app.ai import resume_routes, routes as interview_routes
 from app.auth import oauth_routes, routes as auth_routes
-from app.content import companies_routes, dsa_routes, quiz_routes
+from app.content import companies_routes, dsa_routes, progress_routes, quiz_routes
 
 
 @asynccontextmanager
@@ -34,6 +34,7 @@ app.include_router(dsa_routes.router)
 app.include_router(interview_routes.router)
 app.include_router(resume_routes.router)
 app.include_router(companies_routes.router)
+app.include_router(progress_routes.router)
 
 
 @app.get("/health")

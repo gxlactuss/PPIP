@@ -3,7 +3,9 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     app_name: str = "Placement Prep API"
-    database_url: str = "sqlite:///./placement_prep.db"
+    database_url: str = (
+        "postgresql+psycopg2://postgres:121726@localhost:5432/placed_db"
+    )
 
     jwt_secret_key: str = "CHANGE_ME_IN_ENV"
     jwt_algorithm: str = "HS256"
@@ -59,7 +61,9 @@ class Settings(BaseSettings):
     cors_origins: list[str] = ["*"]
 
     class Config:
-        env_file = ".env"
+        env_file = (".env", "backend/.env")
+        extra = "ignore"
+
 
 
 settings = Settings()

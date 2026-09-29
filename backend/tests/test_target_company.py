@@ -31,18 +31,28 @@ class TargetCompanyTests(unittest.TestCase):
         for patch in self.patches:
             patch.stop()
         self.engine.dispose()
-        os.remove(self.path)
+        try:
+            os.remove(self.path)
+        except PermissionError:
+            pass
 
     def test_existing_users_table_gains_the_column(self):
-        with sqlite3.connect(self.path) as connection:
-            connection.execute(
+        conn = sqlite3.connect(self.path)
+        try:
+            conn.execute(
                 "CREATE TABLE users (id INTEGER PRIMARY KEY, email VARCHAR, hashed_password VARCHAR)"
             )
+            conn.commit()
+        finally:
+            conn.close()
 
         db.init_db()
 
-        with sqlite3.connect(self.path) as connection:
-            columns = {row[1] for row in connection.execute("PRAGMA table_info(users)")}
+        conn = sqlite3.connect(self.path)
+        try:
+            columns = {row[1] for row in conn.execute("PRAGMA table_info(users)")}
+        finally:
+            conn.close()
         self.assertIn("target_company", columns)
 
     def test_patch_me_round_trips_target_company(self):
